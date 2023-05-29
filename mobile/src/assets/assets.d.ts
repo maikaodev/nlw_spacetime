@@ -1,2 +1,8 @@
 declare module '*.png'
-// Informa ao ts que todo arquivo com .png eu posso exportar
+
+declare module '*.svg' {
+  import React from 'react'
+  import { SvgProps } from 'react-native-svg'
+  const content: React.FC<SvgProps>
+  export default content
+}
