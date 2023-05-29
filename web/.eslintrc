@@ -3,5 +3,6 @@
     "next/core-web-vitals",
     "@rocketseat/eslint-config/react",
     "prettier"
-  ]
+  ],
+  "prettier/prettier": ["error", { "endOfLine": "auto" }]
 }
