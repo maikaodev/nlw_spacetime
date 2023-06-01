@@ -1,7 +1,11 @@
-import { Copyright, EmptyMemories, Hero } from '@/components'
-import { SignIn } from '@/components/SignIn'
+import { cookies } from "next/headers";
+
+import { Copyright, EmptyMemories, Hero, Profile } from "@/components";
+import { SignIn } from "@/components/SignIn";
 
 export default function Home() {
+  const isAuthenticated = cookies().has("token");
+
   return (
     <main className="grid min-h-screen grid-cols-2">
       <div className="relative flex flex-col items-start justify-between space-y-10 overflow-hidden border-r border-white/10 bg-[url(../assets/bg-stars.svg)] bg-cover px-16 py-2">
@@ -9,7 +13,8 @@ export default function Home() {
 
         <div className="absolute bottom-0 right-2 top-0 w-2 bg-stripes " />
 
-        <SignIn />
+        {!isAuthenticated && <SignIn />}
+        {isAuthenticated && <Profile />}
 
         <Hero />
 
@@ -20,5 +25,5 @@ export default function Home() {
         <EmptyMemories />
       </div>
     </main>
-  )
+  );
 }
