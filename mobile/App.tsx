@@ -1,22 +1,57 @@
 import { StatusBar } from 'expo-status-bar'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 
+import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
 import {
   Roboto_400Regular,
   Roboto_700Bold,
   useFonts,
 } from '@expo-google-fonts/roboto'
 
-import { BaiJamjuree_700Bold } from '@expo-google-fonts/bai-jamjuree'
-
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 import { styled } from 'nativewind'
+import { useEffect } from 'react'
 import blurBg from './src/assets/bg-blur.png'
 import NlWLogo from './src/assets/nlw-spacetime-logo.svg'
 import Stripes from './src/assets/stripes.svg'
 
 const StyledStripes = styled(Stripes)
 
+const discovery = {
+  authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+  tokenEndpoint: 'https://github.com/login/oauth/access_token',
+  revocationEndpoint:
+    'https://github.com/settings/connections/applications/a3eecaa368f5c54697a3',
+}
+
 export default function App() {
+  const [request, response, signInWithGithub] = useAuthRequest(
+    {
+      clientId: 'a3eecaa368f5c54697a3',
+      scopes: ['identity'],
+      redirectUri: makeRedirectUri({
+        scheme: 'nlwspacetime',
+      }),
+    },
+    discovery,
+  )
+
+  useEffect(() => {
+    //  Usar para verificar a uri em caso de problemas com login
+
+    // console.log(
+    //   makeRedirectUri({
+    //     scheme: 'nlwspacetime',
+    //   }),
+    // )
+
+    if (response?.type === 'success') {
+      const { code } = response.params
+
+      console.log({ code })
+    }
+  }, [response])
+
   const [hasLoadedFonts] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
@@ -52,6 +87,7 @@ export default function App() {
         <TouchableOpacity
           activeOpacity={0.7}
           className="rounded-full bg-green-500 px-5 py-3"
+          onPress={() => signInWithGithub()}
         >
           <Text className="font-alt text-sm uppercase">
             Cadastrar lembrança
