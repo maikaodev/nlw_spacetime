@@ -1,3 +1,4 @@
+import * as SecureStore from 'expo-secure-store'
 import { StatusBar } from 'expo-status-bar'
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 
@@ -49,11 +50,16 @@ export default function App() {
     if (response?.type === 'success') {
       const { code } = response.params
 
-      api.post('/register', { code }).then((response) => {
-        const { token } = response.data
+      api
+        .post('/register', { code })
+        .then((response) => {
+          const { token } = response.data
 
-        console.log({ token })
-      })
+          SecureStore.setItemAsync('token', token)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     }
   }, [response])
 
