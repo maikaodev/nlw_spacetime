@@ -27,7 +27,7 @@ const discovery = {
 }
 
 export default function App() {
-  const [request, response, signInWithGithub] = useAuthRequest(
+  const [, response, signInWithGithub] = useAuthRequest(
     {
       clientId: 'a3eecaa368f5c54697a3',
       scopes: ['identity'],
